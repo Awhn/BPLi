@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+/* B PLi design tokens — Spotify-like dark mood with warm paper accents */
+@theme {
+	--color-bg: #0f0e13;
+	--color-surface: #1a1822;
+	--color-surface-raised: #242130;
+	--color-accent: #b69cff;
+	--color-accent-strong: #8e6aff;
+	--color-paper: #f4efe6;
+	--color-ink: #efeaf5;
+	--color-ink-muted: #9d96ad;
+	--font-sans: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+	--font-serif: 'Noto Serif KR', 'Georgia', serif;
+}
+
+html {
+	background-color: var(--color-bg);
+	color: var(--color-ink);
+}
+
+body {
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+}
