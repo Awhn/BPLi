@@ -71,6 +71,21 @@ export async function getReaderRecommendations(isbn: string): Promise<Book[]> {
 	return mockBooks.filter((b) => b.isbn !== isbn).slice(0, 4);
 }
 
+// 실시간 급상승 도서 — home feed trend shelf (hotTrend)
+export async function getHotTrendBooks(): Promise<Book[]> {
+	const authKey = env.DATA4LIBRARY_AUTH_KEY;
+	if (authKey) {
+		const searchDt = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+		const data = await fetchJson<{
+			response?: { results?: { result: { docs?: { doc: D4LBookDoc }[] } }[] };
+		}>(`${BASE}/hotTrend?authKey=${authKey}&searchDt=${searchDt}&format=json`);
+		const docs = data?.response?.results?.[0]?.result?.docs;
+		if (docs?.length) return docs.slice(0, 8).map(({ doc }) => toBook(doc, 'trend'));
+	}
+	// fallback: a different slice of the local catalog than the popular shelf
+	return [mockBooks[4], mockBooks[3], mockBooks[5], mockBooks[0]];
+}
+
 // 책별 핵심 키워드 — tag-cloud style hints on the book detail page (keywordList)
 export async function getBookKeywords(isbn: string): Promise<string[]> {
 	const authKey = env.DATA4LIBRARY_AUTH_KEY;
