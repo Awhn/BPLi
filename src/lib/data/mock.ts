@@ -1,6 +1,16 @@
-import type { Book, Chapter, Flow, Quote, Comment, RecommendationSection } from '$lib/types';
+import type { Book, Chapter, Flow, Quote, Comment, MockUser, RecommendationSection } from '$lib/types';
 
 const now = new Date().toISOString();
+
+// Other readers whose public comments appear on the now-playing timeline.
+// 'demo-user' is the seeded "me" before a real cookie user takes over.
+export const mockUsers: MockUser[] = [
+	{ id: 'demo-user', nickname: '나' },
+	{ id: 'user-jiwon', nickname: '지원' },
+	{ id: 'user-haneul', nickname: '하늘' },
+	{ id: 'user-minseo', nickname: '민서' },
+	{ id: 'user-doyun', nickname: '도윤' }
+];
 
 export const mockBooks: Book[] = [
 	{
@@ -12,6 +22,7 @@ export const mockBooks: Book[] = [
 		description: '걷다 보면 마음이 가라앉는다. 산책이라는 작고 확실한 행복에 대한 에세이.',
 		categories: ['에세이'],
 		isbn: '9791186602393',
+		totalPages: 196,
 		sourceType: 'curated',
 		createdAt: now,
 		updatedAt: now
@@ -25,6 +36,7 @@ export const mockBooks: Book[] = [
 		description: '안정된 삶을 버리고 그림에 모든 것을 건 한 남자의 이야기.',
 		categories: ['고전', '소설'],
 		isbn: '9788937460876',
+		totalPages: 244,
 		sourceType: 'public_api',
 		createdAt: now,
 		updatedAt: now
@@ -38,6 +50,7 @@ export const mockBooks: Book[] = [
 		description: '판교 테크노밸리에서 일하는 사람들의 웃기고 슬픈 단편들.',
 		categories: ['소설', '단편'],
 		isbn: '9788936434598',
+		totalPages: 268,
 		sourceType: 'curated',
 		createdAt: now,
 		updatedAt: now
@@ -51,6 +64,7 @@ export const mockBooks: Book[] = [
 		description: '시를 읽듯 걷고, 걷듯이 시를 읽는 날들의 기록.',
 		categories: ['에세이', '시'],
 		isbn: '9791196111890',
+		totalPages: 152,
 		sourceType: 'curated',
 		createdAt: now,
 		updatedAt: now
@@ -63,6 +77,7 @@ export const mockBooks: Book[] = [
 		coverImageUrl: '/images/covers/burnout.svg',
 		description: '번아웃에서 빠져나오는 짧은 글들. B PLi 오리지널 시리즈.',
 		categories: ['오리지널', '심리'],
+		totalPages: 88,
 		sourceType: 'original',
 		createdAt: now,
 		updatedAt: now
@@ -76,6 +91,7 @@ export const mockBooks: Book[] = [
 		description: '책과 도서관을 사랑하는 사람을 위한 지적 여행.',
 		categories: ['인문'],
 		isbn: '9788984074156',
+		totalPages: 360,
 		sourceType: 'public_api',
 		createdAt: now,
 		updatedAt: now
@@ -214,6 +230,27 @@ export const mockQuotes: Quote[] = [
 		sourceType: 'ocr',
 		createdAt: now,
 		updatedAt: now
+	},
+	// Other readers' shared quotes — interleaved into the page timeline
+	{
+		id: 'quote-4',
+		userId: 'user-jiwon',
+		bookId: 'book-1',
+		text: '아무 데도 가지 않기 위해 걷는다. 그 무용함이 좋다.',
+		pageNumber: 88,
+		sourceType: 'manual',
+		createdAt: now,
+		updatedAt: now
+	},
+	{
+		id: 'quote-5',
+		userId: 'user-minseo',
+		bookId: 'book-2',
+		text: '아름다움은 예술가가 영혼의 고통을 거쳐 만들어내는 경이로운 것이다.',
+		pageNumber: 160,
+		sourceType: 'manual',
+		createdAt: now,
+		updatedAt: now
 	}
 ];
 
@@ -236,6 +273,67 @@ export const mockComments: Comment[] = [
 		pageNumber: 90,
 		body: '여기서부터 이야기가 완전히 달라진다.',
 		visibility: 'private',
+		createdAt: now,
+		updatedAt: now
+	},
+	// Public comments from other readers, pinned to page positions (SoundCloud style)
+	{
+		id: 'comment-3',
+		userId: 'user-jiwon',
+		bookId: 'book-1',
+		pageNumber: 21,
+		body: '첫 장부터 마음이 느슨해지는 기분.',
+		visibility: 'public',
+		createdAt: now,
+		updatedAt: now
+	},
+	{
+		id: 'comment-4',
+		userId: 'user-haneul',
+		bookId: 'book-1',
+		pageNumber: 64,
+		body: '혼자 걷는 시간에 대한 묘사가 정확해서 밑줄.',
+		visibility: 'public',
+		createdAt: now,
+		updatedAt: now
+	},
+	{
+		id: 'comment-5',
+		userId: 'user-doyun',
+		bookId: 'book-1',
+		pageNumber: 130,
+		body: '비 오는 날 챕터는 꼭 비 올 때 읽으세요.',
+		visibility: 'public',
+		createdAt: now,
+		updatedAt: now
+	},
+	{
+		id: 'comment-6',
+		userId: 'user-minseo',
+		bookId: 'book-2',
+		pageNumber: 45,
+		body: '스트릭랜드, 처음엔 이해 못 했는데 점점 빠져든다.',
+		visibility: 'public',
+		createdAt: now,
+		updatedAt: now
+	},
+	{
+		id: 'comment-7',
+		userId: 'user-jiwon',
+		bookId: 'book-2',
+		pageNumber: 188,
+		body: '여기 이 문단, 올해 읽은 문장 중 최고.',
+		visibility: 'public',
+		createdAt: now,
+		updatedAt: now
+	},
+	{
+		id: 'comment-8',
+		userId: 'user-haneul',
+		bookId: 'book-3',
+		pageNumber: 35,
+		body: '판교 다니는 사람은 다 공감할 듯 ㅋㅋ',
+		visibility: 'public',
 		createdAt: now,
 		updatedAt: now
 	}

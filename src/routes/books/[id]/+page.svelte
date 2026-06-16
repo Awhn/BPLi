@@ -41,7 +41,16 @@
 	{/if}
 </header>
 
-<section class="px-4">
+<div class="px-4">
+	<a
+		href="/play/{data.book.id}"
+		class="flex items-center justify-center gap-2 rounded-full bg-accent-strong py-3 text-sm font-bold text-white"
+	>
+		▶ 지금 읽기
+	</a>
+</div>
+
+<section class="px-4 pt-3">
 	<form method="POST" action="?/status" use:enhance class="flex flex-wrap justify-center gap-2">
 		{#each statusOptions as option (option.value)}
 			<button

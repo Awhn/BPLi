@@ -34,6 +34,7 @@ model Book {
   description   String?
   categories    String[]
   isbn          String?  @unique
+  totalPages    Int? // total page count — powers the now-playing progress scrubber
   sourceType    String   @default("user_added") // user_added | public_api | curated | original | licensed
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -120,12 +121,13 @@ model Comment {
 
 model ReadingStatus {
   id         String    @id @default(cuid())
-  userId     String
-  bookId     String
-  status     String // want_to_read | reading | finished | paused
-  startedAt  DateTime?
-  finishedAt DateTime?
-  updatedAt  DateTime  @updatedAt
+  userId      String
+  bookId      String
+  status      String // want_to_read | reading | finished | paused
+  currentPage Int? // last page the reader is on — anchors new page comments
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  updatedAt   DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)

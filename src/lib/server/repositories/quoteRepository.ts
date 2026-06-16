@@ -30,6 +30,22 @@ export function findCommentsByBookId(bookId: string): Comment[] {
 		.sort((a, b) => (a.pageNumber ?? 0) - (b.pageNumber ?? 0));
 }
 
+// Now-playing timeline scope: everyone's public comments + the reader's own
+// (including private), ordered by page position.
+export function findVisibleCommentsByBookId(bookId: string, userId: string): Comment[] {
+	return getStore()
+		.comments.filter(
+			(c) => c.bookId === bookId && (c.visibility === 'public' || c.userId === userId)
+		)
+		.sort((a, b) => (a.pageNumber ?? 0) - (b.pageNumber ?? 0));
+}
+
+export function findVisibleQuotesByBookId(bookId: string): Quote[] {
+	// Quotes have no visibility field yet; surface every quote on the book so
+	// the shared timeline feels alive (reader's own + seeded mock-user quotes).
+	return getStore().quotes.filter((q) => q.bookId === bookId);
+}
+
 export function findCommentsByQuoteId(quoteId: string): Comment[] {
 	return getStore().comments.filter((c) => c.quoteId === quoteId);
 }

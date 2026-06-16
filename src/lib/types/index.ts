@@ -12,6 +12,7 @@ export interface Book {
 	description?: string;
 	categories: string[];
 	isbn?: string;
+	totalPages?: number;
 	sourceType: BookSourceType;
 	createdAt: string;
 	updatedAt: string;
@@ -95,6 +96,7 @@ export interface ReadingStatus {
 	userId: string;
 	bookId: string;
 	status: ReadingStatusValue;
+	currentPage?: number;
 	startedAt?: string;
 	finishedAt?: string;
 	updatedAt: string;
@@ -111,8 +113,14 @@ export type EventName =
 	| 'comment_created'
 	| 'flow_opened'
 	| 'flow_saved'
+	| 'reading_progress_updated'
 	| 'personality_test_completed'
 	| 'recommendation_clicked';
+
+export interface MockUser {
+	id: string;
+	nickname: string;
+}
 
 export interface AppEvent {
 	id: string;
