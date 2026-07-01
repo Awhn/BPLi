@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import QuoteFab from '$lib/components/quote/QuoteFab.svelte';
 
-	let { data } = $props();
+	let { data, form } = $props();
 </script>
 
 <!-- Track-play style chapter view: light, focused reading (CLAUDE.md §15) -->
@@ -20,21 +21,42 @@
 
 <article class="px-6 pb-8">
 	{#if data.chapter.summary}
-		<p class="rounded-xl bg-surface p-5 font-serif text-base leading-loose text-paper/90">
-			{data.chapter.summary}
-		</p>
+		<p class="mb-5 text-sm text-ink-muted">{data.chapter.summary}</p>
 	{/if}
 
-	{#if data.chapter.contentAvailability === 'metadata_only'}
-		<p class="mt-6 text-center text-sm text-ink-muted">
-			이 챕터는 아직 정보만 제공돼요.<br />구절을 저장하며 기록을 시작해보세요.
-		</p>
-	{:else if data.chapter.contentAvailability === 'original_content'}
-		<p class="mt-6 font-serif text-base leading-loose text-paper/85">
-			(오리지널 콘텐츠 본문 영역 — Phase 3에서 콘텐츠 플랫폼으로 확장됩니다)
-		</p>
+	{#if data.chapter.previewBody}
+		<!-- The actual reading surface — a real excerpt, not a placeholder (§6.2) -->
+		<div class="space-y-4 font-serif text-base leading-loose text-paper/90">
+			{#each data.chapter.previewBody.split('\n\n') as para (para)}
+				<p>{para}</p>
+			{/each}
+		</div>
+	{:else if data.chapter.contentAvailability === 'metadata_only'}
+		<div class="mt-4 rounded-xl bg-surface p-5 text-center text-sm text-ink-muted">
+			이 챕터의 본문은 곧 열려요.<br />마음에 남는 페이지에 구절과 감정을 먼저 기록해두세요.
+		</div>
+	{:else}
+		<div class="mt-4 rounded-xl bg-surface p-5 text-center text-sm text-ink-muted">
+			미리보기 준비 중이에요. 지금은 구절을 저장하며 시작해보세요.
+		</div>
 	{/if}
 </article>
+
+<!-- Chapter First: mark this track as finished -->
+<div class="px-6 pb-8">
+	<form method="POST" action="?/complete" use:enhance>
+		<button
+			type="submit"
+			class="w-full rounded-full py-3 text-sm font-medium transition-colors
+				{form?.completed
+				? 'bg-accent/20 text-accent'
+				: 'bg-surface-raised text-ink hover:bg-surface'}"
+			disabled={form?.completed}
+		>
+			{form?.completed ? '완료했어요 ✓' : '이 챕터 다 읽었어요'}
+		</button>
+	</form>
+</div>
 
 <nav class="flex justify-between px-6 pb-10 text-sm">
 	{#if data.prevChapter}

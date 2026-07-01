@@ -1,7 +1,16 @@
 // In-memory store backing the MVP. Mirrors the Prisma schema so we can swap
 // to PostgreSQL without touching services. Survives for the lifetime of the
 // server process only — fine for mock-first development (CLAUDE.md §18).
-import type { Book, Chapter, Flow, Quote, Comment, ReadingStatus, AppEvent } from '$lib/types';
+import type {
+	Book,
+	Chapter,
+	Flow,
+	Quote,
+	Comment,
+	ReadingStatus,
+	AppEvent,
+	PersonalityType
+} from '$lib/types';
 import {
 	mockBooks,
 	mockChapters,
@@ -18,6 +27,8 @@ interface Store {
 	comments: Comment[];
 	readingStatuses: ReadingStatus[];
 	events: AppEvent[];
+	// Reading personality test result per user (§10.2 → §11 personalization)
+	personalities: Record<string, PersonalityType>;
 }
 
 const globalKey = Symbol.for('bpli.store');
@@ -32,7 +43,8 @@ function createStore(): Store {
 		quotes: [...mockQuotes],
 		comments: [...mockComments],
 		readingStatuses: [],
-		events: []
+		events: [],
+		personalities: {}
 	};
 }
 

@@ -5,8 +5,8 @@
 	let ratio: 'story' | 'square' = $state('story');
 
 	async function share() {
-		// Log the share event regardless of share method
-		fetch(`/share/${data.quote.id}?/shared`, { method: 'POST', body: new FormData() });
+		// Log the share event (best-effort, must not block the share/copy flow)
+		fetch(`/share/${data.quote.id}/shared`, { method: 'POST' }).catch(() => {});
 
 		const text = `“${data.quote.text}”${data.book ? ` — ${data.book.title}, ${data.book.author}` : ''}\n\nB PLi에서 책을 플레이하세요`;
 		if (navigator.share) {

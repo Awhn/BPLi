@@ -5,9 +5,14 @@
 	import ChapterList from '$lib/components/chapter/ChapterList.svelte';
 	import QuoteCard from '$lib/components/quote/QuoteCard.svelte';
 	import QuoteFab from '$lib/components/quote/QuoteFab.svelte';
+	import FlowCard from '$lib/components/flow/FlowCard.svelte';
 	import Shelf from '$lib/components/common/Shelf.svelte';
+	import { COMMENT_EMOTIONS, emotionLabel, emotionEmoji } from '$lib/data/emotions';
+	import type { CommentEmotion } from '$lib/types';
 
 	let { data, form } = $props();
+
+	let selectedEmotion: CommentEmotion | null = $state(null);
 
 	const statusOptions = [
 		{ value: 'want_to_read', label: '읽고 싶어요' },
@@ -97,39 +102,78 @@
 	{#if data.comments.length > 0}
 		<ul class="mb-4 space-y-2">
 			{#each data.comments as comment (comment.id)}
-				<li class="flex gap-3 rounded-lg bg-surface p-3 text-sm">
+				<li class="flex items-start gap-3 rounded-lg bg-surface p-3 text-sm">
 					{#if comment.pageNumber}
 						<span class="shrink-0 font-mono text-xs text-accent">p.{comment.pageNumber}</span>
 					{/if}
-					<p class="text-ink">{comment.body}</p>
+					<div class="min-w-0 flex-1">
+						{#if comment.emotion}
+							<span class="mb-0.5 inline-block rounded-full bg-accent/15 px-2 py-0.5 text-[10px] text-accent">
+								{emotionEmoji(comment.emotion)} {emotionLabel(comment.emotion)}
+							</span>
+						{/if}
+						<p class="text-ink">{comment.body}</p>
+					</div>
 				</li>
 			{/each}
 		</ul>
 	{/if}
 
 	<!-- SoundCloud-style positioned comment: emotion pinned to a page (CLAUDE.md §9.5) -->
-	<form method="POST" action="?/comment" use:enhance class="flex gap-2">
-		<input
-			name="pageNumber"
-			type="number"
-			min="1"
-			placeholder="p."
-			class="w-16 rounded-lg bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted"
-		/>
-		<input
-			name="body"
-			required
-			placeholder="이 페이지에서 느낀 감정을 남겨보세요"
-			class="flex-1 rounded-lg bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted"
-		/>
-		<button type="submit" class="rounded-lg bg-accent-strong px-4 text-sm font-medium text-white">
-			남기기
-		</button>
+	<form method="POST" action="?/comment" use:enhance={() => async ({ update }) => {
+		await update();
+		selectedEmotion = null;
+	}}>
+		<!-- Structured emotion tag (§11 signal, §10.3 Wrapped metric) -->
+		<div class="mb-2 flex flex-wrap gap-1.5">
+			{#each COMMENT_EMOTIONS as emo (emo.value)}
+				<button
+					type="button"
+					onclick={() => (selectedEmotion = selectedEmotion === emo.value ? null : emo.value)}
+					class="rounded-full px-2.5 py-1 text-xs transition-colors
+						{selectedEmotion === emo.value
+						? 'bg-accent-strong text-white'
+						: 'bg-surface-raised text-ink-muted hover:text-ink'}"
+				>
+					{emo.emoji} {emo.label}
+				</button>
+			{/each}
+		</div>
+		<input type="hidden" name="emotion" value={selectedEmotion ?? ''} />
+		<div class="flex gap-2">
+			<input
+				name="pageNumber"
+				type="number"
+				min="1"
+				placeholder="p."
+				class="w-16 rounded-lg bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted"
+			/>
+			<input
+				name="body"
+				required
+				placeholder="이 페이지에서 느낀 감정을 남겨보세요"
+				class="flex-1 rounded-lg bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted"
+			/>
+			<button type="submit" class="rounded-lg bg-accent-strong px-4 text-sm font-medium text-white">
+				남기기
+			</button>
+		</div>
 	</form>
 	{#if form?.commentError}
 		<p class="mt-2 text-xs text-red-400">{form.commentError}</p>
 	{/if}
 </section>
+
+{#if data.relatedFlows.length > 0}
+	<!-- Related Flow (§15) — album → playlists (§9.3) -->
+	<div class="pb-2">
+		<Shelf title="관련 Flow" subtitle="이 책이 담긴 플레이리스트">
+			{#each data.relatedFlows as flow (flow.id)}
+				<FlowCard {flow} />
+			{/each}
+		</Shelf>
+	</div>
+{/if}
 
 {#if data.recommendations.length > 0}
 	<div class="-mx-0 pb-6">

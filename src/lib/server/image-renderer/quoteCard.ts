@@ -18,20 +18,35 @@ function escapeXml(text: string): string {
 		.replaceAll('"', '&quot;');
 }
 
-// Greedy line wrap tuned for CJK: roughly equal-width glyphs
+// Greedy line wrap tuned for CJK: roughly equal-width glyphs. Words are soft
+// break opportunities, but a single word longer than maxChars is hard-chopped
+// by grapheme so long space-less Korean/OCR runs never overflow the card.
 function wrapText(text: string, maxChars: number): string[] {
 	const lines: string[] = [];
-	let current = '';
+	let current: string[] = []; // graphemes on the current line
+
+	const flush = () => {
+		if (current.length) {
+			lines.push(current.join(''));
+			current = [];
+		}
+	};
+
 	for (const word of text.split(' ')) {
-		const candidate = current ? `${current} ${word}` : word;
-		if (candidate.length > maxChars && current) {
-			lines.push(current);
-			current = word;
-		} else {
-			current = candidate;
+		const wordGraphemes = Array.from(word);
+		// If appending this word (plus a space) would overflow, break first.
+		if (current.length && current.length + 1 + wordGraphemes.length > maxChars) {
+			flush();
+		} else if (current.length) {
+			current.push(' ');
+		}
+		// Emit the word grapheme-by-grapheme, hard-wrapping when it alone is too long.
+		for (const g of wordGraphemes) {
+			if (current.length >= maxChars) flush();
+			current.push(g);
 		}
 	}
-	if (current) lines.push(current);
+	flush();
 	return lines;
 }
 
@@ -46,7 +61,8 @@ export function renderQuoteCardSvg(
 	const quoteFontSize = 52;
 	const lineHeight = quoteFontSize * 1.7;
 
-	const quoteLines = wrapText(`“${quote.text}”`, 18);
+	// 888px content width ÷ 52px glyph ≈ 16 CJK chars per line
+	const quoteLines = wrapText(`“${quote.text}”`, 16);
 	const commentLines = comment ? wrapText(comment, 26) : [];
 
 	const blockHeight =

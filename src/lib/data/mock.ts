@@ -100,23 +100,23 @@ export const mockBooks: Book[] = [
 
 export const mockChapters: Chapter[] = [
 	// 아무튼, 산책
-	{ id: 'ch-1-1', bookId: 'book-1', title: '걷기로 했다', order: 1, estimatedReadingMinutes: 8, summary: '산책을 시작하게 된 이유', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
-	{ id: 'ch-1-2', bookId: 'book-1', title: '혼자 걷는 시간', order: 2, estimatedReadingMinutes: 12, summary: '혼자만의 산책이 주는 것들', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
+	{ id: 'ch-1-1', bookId: 'book-1', title: '걷기로 했다', order: 1, estimatedReadingMinutes: 8, summary: '산책을 시작하게 된 이유', previewBody: '어느 날부터 나는 걷기 시작했다. 특별한 이유가 있었던 것은 아니다. 그저 가만히 있는 것이 조금 견디기 어려웠을 뿐이다.\n\n신발을 신고 문을 나서는 일. 그 사소한 결심이 하루의 무게를 조금 덜어준다는 걸, 나는 걷고 나서야 알았다.', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
+	{ id: 'ch-1-2', bookId: 'book-1', title: '혼자 걷는 시간', order: 2, estimatedReadingMinutes: 12, summary: '혼자만의 산책이 주는 것들', previewBody: '혼자 걷는 시간에는 아무에게도 설명하지 않아도 된다. 어디로 가는지, 왜 가는지, 언제 돌아올지.\n\n그 무계획이 좋았다. 목적지가 없다는 건 실패할 일도 없다는 뜻이니까. 나는 그렇게 한참을 걸었다.', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
 	{ id: 'ch-1-3', bookId: 'book-1', title: '비 오는 날의 산책', order: 3, estimatedReadingMinutes: 10, contentAvailability: 'metadata_only', isOriginal: false, isCurated: false, createdAt: now, updatedAt: now },
 	// 달과 6펜스
-	{ id: 'ch-2-1', bookId: 'book-2', title: '1장', order: 1, estimatedReadingMinutes: 15, summary: '화자가 스트릭랜드를 처음 알게 되다', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
+	{ id: 'ch-2-1', bookId: 'book-2', title: '1장', order: 1, estimatedReadingMinutes: 15, summary: '화자가 스트릭랜드를 처음 알게 되다', previewBody: '솔직히 고백하자면, 찰스 스트릭랜드를 처음 만났을 때 나는 그에게서 어떤 비범함도 느끼지 못했다.\n\n그러나 지금 그의 위대함을 의심하는 사람은 거의 없다. 내가 말하려는 것은 바로 그 간극에 관한 이야기다.', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
 	{ id: 'ch-2-2', bookId: 'book-2', title: '2장', order: 2, estimatedReadingMinutes: 14, contentAvailability: 'metadata_only', isOriginal: false, isCurated: false, createdAt: now, updatedAt: now },
 	{ id: 'ch-2-3', bookId: 'book-2', title: '3장', order: 3, estimatedReadingMinutes: 18, contentAvailability: 'metadata_only', isOriginal: false, isCurated: false, createdAt: now, updatedAt: now },
 	// 일의 기쁨과 슬픔
 	{ id: 'ch-3-1', bookId: 'book-3', title: '잘 살겠습니다', order: 1, estimatedReadingMinutes: 22, summary: '결혼을 앞둔 회사 동료와 청첩장', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
-	{ id: 'ch-3-2', bookId: 'book-3', title: '일의 기쁨과 슬픔', order: 2, estimatedReadingMinutes: 25, summary: '표제작. 판교의 어느 개발자 이야기', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
+	{ id: 'ch-3-2', bookId: 'book-3', title: '일의 기쁨과 슬픔', order: 2, estimatedReadingMinutes: 25, summary: '표제작. 판교의 어느 개발자 이야기', previewBody: '월요일 아침의 사무실은 언제나 조금 낯설다. 주말 사이 무언가가 리셋된 것처럼, 익숙한 자리가 새삼스럽다.\n\n일에는 분명 기쁨이 있다. 다만 그 기쁨은 슬픔과 너무 가까이 붙어 있어서, 가끔은 어느 쪽인지 헷갈릴 뿐이다.', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
 	{ id: 'ch-3-3', bookId: 'book-3', title: '나의 후쿠오카 가이드', order: 3, estimatedReadingMinutes: 20, contentAvailability: 'metadata_only', isOriginal: false, isCurated: false, createdAt: now, updatedAt: now },
 	// 시와 산책
-	{ id: 'ch-4-1', bookId: 'book-4', title: '겨울을 걷는 법', order: 1, estimatedReadingMinutes: 7, contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
+	{ id: 'ch-4-1', bookId: 'book-4', title: '겨울을 걷는 법', order: 1, estimatedReadingMinutes: 7, previewBody: '겨울에는 조금 더 천천히 걷는다. 언 길이 미끄러워서가 아니라, 차가운 공기가 문장처럼 또렷해지기 때문이다.\n\n입김이 흩어지는 걸 보며 생각했다. 사라지는 것들에도 형태가 있다고.', contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
 	{ id: 'ch-4-2', bookId: 'book-4', title: '고요를 줍다', order: 2, estimatedReadingMinutes: 9, contentAvailability: 'preview', isOriginal: false, isCurated: true, createdAt: now, updatedAt: now },
 	// 버닝아웃 (오리지널)
-	{ id: 'ch-5-1', bookId: 'book-5', title: '멈춰도 괜찮아', order: 1, estimatedReadingMinutes: 6, summary: '번아웃 신호를 알아차리는 법', contentAvailability: 'original_content', isOriginal: true, isCurated: true, createdAt: now, updatedAt: now },
-	{ id: 'ch-5-2', bookId: 'book-5', title: '작은 회복의 기술', order: 2, estimatedReadingMinutes: 8, summary: '하루 10분의 회복 루틴', contentAvailability: 'original_content', isOriginal: true, isCurated: true, createdAt: now, updatedAt: now },
+	{ id: 'ch-5-1', bookId: 'book-5', title: '멈춰도 괜찮아', order: 1, estimatedReadingMinutes: 6, summary: '번아웃 신호를 알아차리는 법', previewBody: '번아웃은 갑자기 오지 않는다. 아주 오래, 조금씩, 눈치채지 못하게 쌓인다.\n\n가장 먼저 사라지는 건 사소한 즐거움이다. 좋아하던 일이 시들해지고, 쉬어도 쉰 것 같지 않다면 — 그건 멈추라는 신호다.', contentAvailability: 'original_content', isOriginal: true, isCurated: true, createdAt: now, updatedAt: now },
+	{ id: 'ch-5-2', bookId: 'book-5', title: '작은 회복의 기술', order: 2, estimatedReadingMinutes: 8, summary: '하루 10분의 회복 루틴', previewBody: '거창한 회복을 계획하지 말자. 하루 10분이면 충분하다.\n\n창을 열고, 물을 한 잔 마시고, 아무 문장이나 한 줄 읽는 것. 회복은 대단한 결심이 아니라 작은 반복에서 시작된다.', contentAvailability: 'original_content', isOriginal: true, isCurated: true, createdAt: now, updatedAt: now },
 	{ id: 'ch-5-3', bookId: 'book-5', title: '다시 일과 만나기', order: 3, estimatedReadingMinutes: 7, contentAvailability: 'original_content', isOriginal: true, isCurated: true, createdAt: now, updatedAt: now },
 	// 밤의 도서관
 	{ id: 'ch-6-1', bookId: 'book-6', title: '신화로서의 도서관', order: 1, estimatedReadingMinutes: 16, contentAvailability: 'metadata_only', isOriginal: false, isCurated: false, createdAt: now, updatedAt: now }

@@ -1,4 +1,4 @@
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad, Actions } from './$types';
 import { error } from '@sveltejs/kit';
 import { getBook, getChapter, getChapters } from '$lib/server/services/bookService';
 import { logEvent } from '$lib/server/services/eventService';
@@ -19,4 +19,15 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		prevChapter: idx > 0 ? chapters[idx - 1] : null,
 		nextChapter: idx < chapters.length - 1 ? chapters[idx + 1] : null
 	};
+};
+
+export const actions: Actions = {
+	// Chapter First (§6.1): completion is a first-class signal for Wrapped (§10.3)
+	// and recommendations (§11).
+	complete: async ({ params, locals }) => {
+		const chapter = getChapter(params.chapterId);
+		if (!chapter || chapter.bookId !== params.id) return { completed: false };
+		logEvent(locals.userId, 'chapter_completed', { chapterId: chapter.id, bookId: params.id });
+		return { completed: true };
+	}
 };

@@ -52,6 +52,7 @@ model Chapter {
   order                   Int
   estimatedReadingMinutes Int      @default(10)
   summary                 String?
+  previewBody             String? // short excerpt shown as the reading surface
   contentAvailability     String   @default("metadata_only") // metadata_only | preview | full_content | original_content
   isOriginal              Boolean  @default(false)
   isCurated               Boolean  @default(false)
@@ -109,6 +110,7 @@ model Comment {
   quoteId    String?
   pageNumber Int?
   body       String
+  emotion    String? // comfort | flutter | ache | insight | immersion | humor
   visibility String   @default("private") // private | followers | public
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

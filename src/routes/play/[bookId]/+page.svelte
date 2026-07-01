@@ -152,7 +152,7 @@
 <div class="fixed bottom-16 left-1/2 z-30 w-full max-w-md -translate-x-1/2 border-t border-white/5 bg-bg/95 px-4 py-3 backdrop-blur">
 	<form method="POST" action="?/comment" use:enhance class="flex items-center gap-2">
 		<span class="shrink-0 rounded-lg bg-surface-raised px-2 py-2 font-mono text-xs text-accent">
-			p.{data.currentPage}
+			{data.currentPage > 0 ? `p.${data.currentPage}` : '전체'}
 		</span>
 		<input
 			name="body"

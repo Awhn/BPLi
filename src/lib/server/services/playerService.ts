@@ -1,7 +1,7 @@
 // "지금 재생 중" (now playing) — the Spotify-style playback screen for the
 // book a reader is currently in. Builds the progress state and the merged,
 // page-ordered timeline of comments + shared quotes (SoundCloud style).
-import type { Book, Chapter } from '$lib/types';
+import type { Book, Chapter, ReadingStatusValue } from '$lib/types';
 import * as bookRepo from '$lib/server/repositories/bookRepository';
 import * as quoteRepo from '$lib/server/repositories/quoteRepository';
 import * as statusRepo from '$lib/server/repositories/readingStatusRepository';
@@ -23,7 +23,7 @@ export interface NowPlaying {
 	currentPage: number;
 	totalPages: number | null;
 	progressRatio: number; // 0–1, 0 when total unknown
-	status: string;
+	status: ReadingStatusValue | null; // null = untracked, don't fake "reading"
 	currentChapter?: Chapter;
 }
 
@@ -52,7 +52,7 @@ function buildNowPlaying(book: Book, userId: string): NowPlaying {
 		currentPage,
 		totalPages,
 		progressRatio,
-		status: status?.status ?? 'reading',
+		status: status?.status ?? null,
 		currentChapter
 	};
 }

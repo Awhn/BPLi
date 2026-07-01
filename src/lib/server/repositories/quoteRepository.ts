@@ -25,19 +25,21 @@ export function createQuote(input: Omit<Quote, 'id' | 'createdAt' | 'updatedAt'>
 }
 
 export function findCommentsByBookId(bookId: string): Comment[] {
+	// Unpaged comments sink to the bottom (consistent with the play timeline).
 	return getStore()
 		.comments.filter((c) => c.bookId === bookId)
-		.sort((a, b) => (a.pageNumber ?? 0) - (b.pageNumber ?? 0));
+		.sort(
+			(a, b) => (a.pageNumber ?? Number.MAX_SAFE_INTEGER) - (b.pageNumber ?? Number.MAX_SAFE_INTEGER)
+		);
 }
 
 // Now-playing timeline scope: everyone's public comments + the reader's own
-// (including private), ordered by page position.
+// (including private). playerService re-sorts the merged timeline, so ordering
+// here is not relied upon.
 export function findVisibleCommentsByBookId(bookId: string, userId: string): Comment[] {
-	return getStore()
-		.comments.filter(
-			(c) => c.bookId === bookId && (c.visibility === 'public' || c.userId === userId)
-		)
-		.sort((a, b) => (a.pageNumber ?? 0) - (b.pageNumber ?? 0));
+	return getStore().comments.filter(
+		(c) => c.bookId === bookId && (c.visibility === 'public' || c.userId === userId)
+	);
 }
 
 export function findVisibleQuotesByBookId(bookId: string): Quote[] {

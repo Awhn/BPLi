@@ -27,6 +27,7 @@ export interface Chapter {
 	order: number;
 	estimatedReadingMinutes: number;
 	summary?: string;
+	previewBody?: string; // short excerpt shown as the actual reading surface (§6.2 Play over Archive)
 	contentAvailability: ContentAvailability;
 	isOriginal: boolean;
 	isCurated: boolean;
@@ -76,6 +77,16 @@ export interface Quote {
 
 export type CommentVisibility = 'private' | 'followers' | 'public';
 
+// Structured emotion tag on a comment — a recommendation signal (§11) and a
+// Wrapped metric "가장 많이 남긴 감정" (§10.3). Closed vocabulary so it aggregates.
+export type CommentEmotion =
+	| 'comfort' // 위로
+	| 'flutter' // 설렘
+	| 'ache' // 먹먹함
+	| 'insight' // 통찰
+	| 'immersion' // 몰입
+	| 'humor'; // 유쾌
+
 export interface Comment {
 	id: string;
 	userId: string;
@@ -84,6 +95,7 @@ export interface Comment {
 	quoteId?: string;
 	pageNumber?: number;
 	body: string;
+	emotion?: CommentEmotion;
 	visibility: CommentVisibility;
 	createdAt: string;
 	updatedAt: string;
@@ -137,6 +149,28 @@ export type PersonalityType =
 	| 'intellectual_wanderer'
 	| 'quiet_finisher'
 	| 'taste_curator';
+
+export interface PersonalityOption {
+	label: string;
+	// Per-type weights this answer contributes toward the final result
+	weights: Partial<Record<PersonalityType, number>>;
+}
+
+export interface PersonalityQuestion {
+	id: string;
+	prompt: string;
+	options: PersonalityOption[];
+}
+
+export interface PersonalityResult {
+	type: PersonalityType;
+	name: string; // e.g. 감성 수집가형
+	tagline: string;
+	description: string;
+	recommendedBookIds: string[];
+	recommendedFlowIds: string[];
+	categories: string[]; // preferred genres, feeds §11 personalization
+}
 
 export interface RecommendationSection {
 	id: string;

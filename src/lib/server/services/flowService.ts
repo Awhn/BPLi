@@ -8,6 +8,19 @@ export function getFlows(): Flow[] {
 	return flowRepo.findAllFlows();
 }
 
+// Related Flows for a book (§15) — a public Flow is related if any of its items
+// resolves to a chapter or quote belonging to this book. Album → playlists (§9.3).
+export function getFlowsForBook(bookId: string): Flow[] {
+	return flowRepo.findAllFlows().filter((flow) =>
+		flow.items.some((item) => {
+			if (item.type === 'quote') {
+				return quoteRepo.findQuoteById(item.refId)?.bookId === bookId;
+			}
+			return bookRepo.findChapterById(item.refId)?.bookId === bookId;
+		})
+	);
+}
+
 export interface ResolvedFlowItem {
 	order: number;
 	type: 'chapter' | 'quote' | 'original';

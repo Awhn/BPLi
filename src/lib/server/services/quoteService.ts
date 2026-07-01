@@ -1,4 +1,4 @@
-import type { Quote, Comment, QuoteSourceType, CommentVisibility } from '$lib/types';
+import type { Quote, Comment, QuoteSourceType, CommentVisibility, CommentEmotion } from '$lib/types';
 import * as quoteRepo from '$lib/server/repositories/quoteRepository';
 import * as bookRepo from '$lib/server/repositories/bookRepository';
 import { logEvent } from './eventService';
@@ -49,6 +49,7 @@ export interface CreateCommentInput {
 	quoteId?: string;
 	pageNumber?: number;
 	body: string;
+	emotion?: CommentEmotion;
 	visibility?: CommentVisibility;
 }
 
@@ -60,9 +61,15 @@ export function createComment(userId: string, input: CreateCommentInput): Commen
 		quoteId: input.quoteId,
 		pageNumber: input.pageNumber,
 		body: input.body,
+		emotion: input.emotion,
 		visibility: input.visibility ?? 'private'
 	});
-	logEvent(userId, 'comment_created', { commentId: comment.id, bookId: input.bookId });
+	// emotion is a §11 recommendation signal and a §10.3 Wrapped metric
+	logEvent(userId, 'comment_created', {
+		commentId: comment.id,
+		bookId: input.bookId,
+		emotion: input.emotion ?? null
+	});
 	return comment;
 }
 

@@ -6,8 +6,8 @@ import {
 } from '$lib/server/services/data4libraryService';
 import type { ResolvedSection } from '$lib/server/services/recommendationService';
 
-export const load: PageServerLoad = async () => {
-	const sections = getHomeFeed();
+export const load: PageServerLoad = async ({ locals }) => {
+	const sections = getHomeFeed(locals.userId);
 
 	const [popular, trending] = await Promise.all([getPopularLoanBooks(20), getHotTrendBooks()]);
 

@@ -23,3 +23,36 @@ body {
 	font-family: var(--font-sans);
 	-webkit-font-smoothing: antialiased;
 }
+
+/* Soft motion (§16 부드러운 모션) — only for readers who allow motion */
+@media (prefers-reduced-motion: no-preference) {
+	@keyframes bpli-rise {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes bpli-slide-up {
+		from {
+			opacity: 0;
+			transform: translateY(40px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.bpli-rise {
+		animation: bpli-rise 0.35s ease-out both;
+	}
+
+	.bpli-slide-up {
+		animation: bpli-slide-up 0.28s ease-out both;
+	}
+}

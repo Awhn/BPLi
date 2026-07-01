@@ -15,7 +15,9 @@ import {
 	getReaderRecommendations,
 	getBookKeywords
 } from '$lib/server/services/data4libraryService';
+import { getFlowsForBook } from '$lib/server/services/flowService';
 import { findLibrariesWithBook } from '$lib/server/services/bookSearch';
+import { isCommentEmotion } from '$lib/data/emotions';
 import type { ReadingStatusValue } from '$lib/types';
 
 const validStatuses: ReadingStatusValue[] = ['want_to_read', 'reading', 'finished', 'paused'];
@@ -35,6 +37,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		chapters: getChapters(book.id),
 		quotes: getQuotesForBook(book.id, locals.userId),
 		comments: getCommentsForBook(book.id),
+		relatedFlows: getFlowsForBook(book.id),
 		readingStatus: getReadingStatus(locals.userId, book.id)?.status ?? null,
 		recommendations,
 		keywords,
@@ -59,11 +62,14 @@ export const actions: Actions = {
 
 		const pageRaw = String(form.get('pageNumber') ?? '').trim();
 		const pageNumber = pageRaw ? Number(pageRaw) : undefined;
+		const emotionRaw = form.get('emotion');
+		const emotion = isCommentEmotion(emotionRaw) ? emotionRaw : undefined;
 
 		createComment(locals.userId, {
 			bookId: params.id,
 			body,
-			pageNumber: Number.isFinite(pageNumber) ? pageNumber : undefined
+			pageNumber: Number.isFinite(pageNumber) ? pageNumber : undefined,
+			emotion
 		});
 		return { commentSuccess: true };
 	}

@@ -1,6 +1,6 @@
-import type { PageServerLoad, Actions } from './$types';
+import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import { getQuote, markQuoteShared } from '$lib/server/services/quoteService';
+import { getQuote } from '$lib/server/services/quoteService';
 import { getBook } from '$lib/server/services/bookService';
 import * as quoteRepo from '$lib/server/repositories/quoteRepository';
 
@@ -16,9 +16,5 @@ export const load: PageServerLoad = async ({ params }) => {
 	};
 };
 
-export const actions: Actions = {
-	shared: async ({ params, locals }) => {
-		markQuoteShared(locals.userId, params.id);
-		return { success: true };
-	}
-};
+// quote_shared logging lives in ./shared/+server.ts (a dedicated JSON endpoint),
+// decoupled from form-action semantics.
